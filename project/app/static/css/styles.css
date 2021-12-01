@@ -38,6 +38,10 @@
 
 /* Botão adicionar */
 
+#add-link {
+   text-decoration: none; 
+}
+
 .add-div {
     background-color: rgb(0, 102, 255);
     cursor: pointer;
