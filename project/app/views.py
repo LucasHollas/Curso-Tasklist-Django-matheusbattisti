@@ -1,5 +1,8 @@
+from django.core import paginator
 from django.shortcuts import redirect, render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.contrib import messages
+from django.core.paginator import Paginator
 
 from .models import Task
 from .forms import TaskForm
@@ -9,7 +12,14 @@ def taskView(request, id):
     return render(request, 'app/task.html', {'task': task})
 
 def list(request):
-    tasks = Task.objects.all()
+    tasks_list = Task.objects.all()
+
+    paginator = Paginator(tasks_list, 5)
+
+    page = request.GET.get('page')
+
+    tasks = paginator.get_page(page)
+
     return render(request, 'app/list.html', {'tasks': tasks})
 
 def newTask(request):
@@ -41,6 +51,13 @@ def editTask(request, id):
     else:
         return render(request, 'app/edittask.html', {'form': form, 'task': task})
 
+def deleteTask(request, id):
+    task = get_object_or_404(Task, pk=id)
+    task.delete()
+
+    messages.info(request, 'Tarefa deletada com sucesso.')
+
+    return redirect('/')
 
 def yourName(request, name):
     return render(request, 'app/yourname.html', {'name': name })
