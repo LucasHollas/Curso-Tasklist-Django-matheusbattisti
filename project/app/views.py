@@ -11,14 +11,23 @@ def taskView(request, id):
     task = get_object_or_404(Task, pk=id)
     return render(request, 'app/task.html', {'task': task})
 
-def list(request):
-    tasks_list = Task.objects.all()
+def taskList(request):
 
-    paginator = Paginator(tasks_list, 5)
+    search = request.GET.get('search')
 
-    page = request.GET.get('page')
+    if search:
 
-    tasks = paginator.get_page(page)
+        tasks = Task.objects.filter(title__icontains=search)
+
+    else:
+
+        tasks_list = Task.objects.all()
+
+        paginator = Paginator(tasks_list, 5)
+
+        page = request.GET.get('page')
+
+        tasks = paginator.get_page(page)
 
     return render(request, 'app/list.html', {'tasks': tasks})
 
