@@ -144,3 +144,8 @@ ul.messages li {
     margin-left: auto;
     margin-right: auto;
 }
+
+.change-form-p {
+    margin-top: 30px;
+    text-align: center;
+}
